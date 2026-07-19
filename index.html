@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CPU Scheduling Visualizer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <div class="titlebar">
+    <div class="titlebar-main">CPU Scheduling Visualizer</div>
+    <div class="titlebar-sub">FCFS · SJF · SRTF · Round Robin · MLFQ — animated simulation</div>
+  </div>
+  <div class="body-pad">
+
+    <div class="grid">
+
+      <!-- ================= LEFT: PROCESS BUILDER ================= -->
+      <div class="panel">
+        <h3>Build the Process Queue</h3>
+
+        <div class="field-row">
+          <div>
+            <label for="arrivalInput">Arrival Time</label>
+            <input type="number" id="arrivalInput" min="0" value="0">
+          </div>
+          <div>
+            <label for="burstInput">Exec. Time (burst)</label>
+            <input type="number" id="burstInput" min="1" value="4">
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button onclick="addProcess()">Enqueue</button>
+          <button onclick="removeLastProcess()">Dequeue Last</button>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label for="randomCount">How Many</label>
+            <input type="number" id="randomCount" min="1" value="4">
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button onclick="generateRandom()">Generate Random</button>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="danger" onclick="clearAllProcesses()">Clear All</button>
+        </div>
+
+        <div class="queue-table-wrap">
+          <table id="processTable">
+            <thead><tr><th>#</th><th>Process</th><th>Arrival</th><th>Exec. Time</th><th></th></tr></thead>
+            <tbody id="processTableBody"></tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top:16px;">Algorithm</h3>
+        <select id="algoSelect" onchange="onAlgoChange()">
+          <option value="fcfs">FCFS</option>
+          <option value="sjf">SJF (Non-Preemptive)</option>
+          <option value="srtf">SRTF (Preemptive)</option>
+          <option value="rr">Round Robin</option>
+          <option value="mlfq">MLFQ</option>
+        </select>
+
+        <div id="paramRow" class="hidden" style="margin-top:10px;">
+          <div class="field-row">
+            <div>
+              <label for="quantum">Time Slice (quantum)</label>
+              <input type="number" id="quantum" min="1" value="2">
+            </div>
+            <div id="allotmentField" class="hidden">
+              <label for="allotment">Allotment (per level)</label>
+              <input type="number" id="allotment" min="1" value="4">
+            </div>
+          </div>
+        </div>
+
+        <div class="action-msg" id="actionMsg">No Errors.</div>
+      </div>
+
+      <!-- ================= RIGHT: LIVE STATUS ================= -->
+      <div class="panel">
+        <h3>Live Process Status</h3>
+        <table>
+          <thead>
+            <tr><th>Process</th><th>Status</th><th>Completion %</th><th>Remaining</th><th>Waiting</th></tr>
+          </thead>
+          <tbody id="liveTableBody"></tbody>
+        </table>
+
+        <div style="margin-top:14px;">
+          <div class="stat-line"><span>Average Waiting Time</span><span class="stat-value" id="avgWaiting">--</span></div>
+          <div class="stat-line"><span>Average Turnaround Time</span><span class="stat-value" id="avgTurnaround">--</span></div>
+          <div class="stat-line"><span>Elapsed / Total Time</span><span class="stat-value" id="totalExec">--</span></div>
+          <div class="stat-line"><span>CPU (running now)</span><span class="stat-value" id="cpuNow">--</span></div>
+          <div class="stat-line"><span>Next Up</span><span class="stat-value" id="nextQueue">--</span></div>
+        </div>
+
+        <div class="slider-row">
+          <div class="slider-label"><span>Overall Progress</span><span id="progressPct">0%</span></div>
+          <div class="bar-bg" style="height:16px;"><div class="bar-fill" id="progressBar" style="width:0%;"></div></div>
+        </div>
+
+        <div class="slider-row">
+          <div class="slider-label"><span>Simulation Speed</span><span id="speedLabel">x1</span></div>
+          <input type="range" id="speedSlider" min="1" max="20" value="8">
+        </div>
+
+        <div class="btn-row">
+          <button class="primary" id="simulateBtn" onclick="startSimulation()">▶ Simulate</button>
+          <button class="danger" onclick="resetSimulation()">Reset All</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= GANTT CHART ================= -->
+    <div class="gantt-wrapper">
+      <h3 style="color:var(--amber); font-size:13px; margin-top:0;">Gantt Chart (each box = 1 second)</h3>
+      <div class="gantt-chart" id="ganttChart"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
