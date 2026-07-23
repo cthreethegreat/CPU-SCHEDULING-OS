@@ -104,15 +104,7 @@ Gantt order: `P1[0-2] P2[2-4] P3[4-6] P1[6-8] P2[8-9] P3[9-11] P1[11-12] P3[12-1
 
 ## 7. Contributions
 
-Individual project — completed solo by [Your Name].
-
-| Task | Contributor |
-|---|---|
-| Process queue UI & input validation | [Your Name] |
-| FCFS, SJF, SRTF, Round Robin, MLFQ logic | [Your Name] |
-| Animated Gantt chart & live status table | [Your Name] |
-| Styling / theme | [Your Name] |
-| Documentation (this README) | [Your Name] |
+Individual project — completed solo by Cesar G. De Asis III.
 
 ---
 
